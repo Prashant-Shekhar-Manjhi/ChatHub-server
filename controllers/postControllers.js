@@ -87,7 +87,7 @@ exports.likePost = async (req,res)=>{
             })
         }else{
             await post.updateOne({$pull:{likes: req.body.userId}});
-            res.status(403).json({
+            res.status(200).json({
                 status:"success",
                 message:"disliked!"
             })
@@ -118,7 +118,7 @@ exports.getPost = async (req,res)=>{
 //get timeline posts
 exports.getTimelines = async (req,res)=>{
     try{
-        const currentUser = await userModel.findById(req.body.userId);
+        const currentUser = await userModel.findById(req.params.userId);
         const userPosts = await postModel.find({userId : currentUser._id});
         const friendPosts = await Promise.all(
             currentUser.followings.map(friendId=>{
@@ -127,7 +127,22 @@ exports.getTimelines = async (req,res)=>{
         )
         res.status(200).json({
             status:'success',
-            timelines: [...userPosts,...friendPosts]
+            timelines: userPosts.concat(...friendPosts)
+        })
+    }catch(err){
+        res.status(500).json({
+            status:"fail",
+            error:err
+        })
+    }
+}
+//getUserPosts..
+exports.getUserPosts = async (req,res)=>{
+    try{
+        const posts = await postModel.find({userId: req.params.id});
+        res.status(200).json({
+            status:'success',
+            posts
         })
     }catch(err){
         res.status(500).json({

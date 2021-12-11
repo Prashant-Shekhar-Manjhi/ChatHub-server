@@ -16,7 +16,10 @@ router.route("/:id/like")
 .put(postControllers.likePost);
 
 //get timelines
-router.route("/timelines/all")
+router.route("/timelines/:userId")
 .get(postControllers.getTimelines);
+
+//get user's all post..
+router.route("/profile/:id").get(postControllers.getUserPosts);
 
 module.exports = router;

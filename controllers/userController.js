@@ -119,8 +119,32 @@ exports.unFollowUser = async (req, res)=>{
         }catch(err){
             res.status(500).json(err);
         }
-        }
-        else{
-            res.status(500).json("You can't unfollow Yourself!");
-        }
+    }
+    else{
+        res.status(500).json("You can't unfollow Yourself!");
+    }
 }
+
+
+ exports.getAllFriends = async (req,res)=>{
+     try{
+         const user = await userModel.findById(req.params.id);
+         const friends = await Promise.all(
+             user.followings.map(friendId => userModel.findById(friendId))
+         );
+         let friendList = [];
+         friends.map(friend => {
+            const {_id, username, profilePicture} = friend;
+            friendList.push({_id, username, profilePicture});
+         });
+         res.status(200).json({
+             status:"success",
+             friendList
+         })
+     }catch(err){
+         res.status(500).json({
+             status: "Failure",
+             err
+         })
+     }
+ }
