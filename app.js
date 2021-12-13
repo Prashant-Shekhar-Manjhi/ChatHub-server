@@ -4,6 +4,8 @@ const morgan = require("morgan");
 const userRouter = require("./routes/userRoutes");
 const authRouter = require("./routes/authRoutes");
 const postRouter = require("./routes/postRoutes");
+const conversationRouter = require("./routes/conversationRoutes");
+const messageRouter = require("./routes/messageRoutes");
 const cors = require('cors');
 const multer  = require('multer');
 const path = require('path');
@@ -46,6 +48,8 @@ app.post("/api/upload",upload.single("file"),(req,res)=>{
 app.use("/api/user",userRouter);
 app.use("/api/auth",authRouter);
 app.use("/api/post",postRouter);
+app.use("/api/conversation",conversationRouter);
+app.use("/api/message", messageRouter);
 
 
 module.exports = app;
