@@ -27,3 +27,15 @@ exports.getConversation = async (req,res)=>{
         res.status(500).json(error)
     }
 }
+
+// get conversation of two user id...
+exports.getConversationOfTwoUsers = async (req,res)=>{
+    try {
+        const fetchedConversation = await conversation.findOne({
+          members: { $all: [req.params.firstUserId, req.params.secondUserId] },
+        });
+        res.status(200).json(fetchedConversation)
+      } catch (err) {
+        res.status(500).json(err);
+      }
+}
