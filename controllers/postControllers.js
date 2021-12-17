@@ -51,8 +51,8 @@ exports.updatePost = async (req,res)=>{
 }
 //delete post
 exports.deletePost = async (req,res)=>{
-    const post = await postModel.findById(req.params.id);
     try{
+        const post = await postModel.findById(req.params.id);
         if(post.userId === req.body.userId){
             await post.deleteOne();
             res.status(200).json({

@@ -9,6 +9,9 @@ const messageRouter = require("./routes/messageRoutes");
 const cors = require('cors');
 const multer  = require('multer');
 const path = require('path');
+// const fs = require('fs');
+// const { promisify } = require('util');
+// const unlinkAsync = promisify(fs.unlink);
 
 
 
@@ -32,7 +35,7 @@ const storage = multer.diskStorage({
     }
 })
 const upload = multer({storage});
-app.post("/api/upload",upload.single("file"),(req,res)=>{
+app.post("/api/upload",upload.single("file"),async (req,res)=>{
     try{
         return res.status(200).json({
             status:"success",
